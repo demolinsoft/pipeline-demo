@@ -26,7 +26,7 @@ pipeline {
             steps {
                 echo '### Checking for compile errors ###'
                 sh '''
-                        cd ${APP_NAME}
+
                         mvn -s settings.xml -B clean compile
                    '''
             }
@@ -36,7 +36,7 @@ pipeline {
             steps {
                 echo '### Running unit tests ###'
                 sh '''
-                        cd ${APP_NAME}
+
                         mvn -s settings.xml -B clean test
                    '''
             }
@@ -46,7 +46,7 @@ pipeline {
             steps {
                 echo '### Running pmd on code ###'
                 sh '''
-                        cd ${APP_NAME}
+                        
                         mvn -s settings.xml -B clean pmd:check
                    '''
             }
@@ -56,7 +56,7 @@ pipeline {
             steps {
                 echo '### Creating fat JAR ###'
                 sh '''
-                        cd ${APP_NAME}
+                        
                         mvn -s settings.xml -B clean package -DskipTests=true
                    '''
             }
