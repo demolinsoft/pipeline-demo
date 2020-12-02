@@ -9,7 +9,7 @@ pipeline {
     }
 
     environment {
-        //TODO: Customize these variables for your environment
+        
         DEV_PROJECT = "demo-movies-dev"
         STAGE_PROJECT = "demo-movies-stage"
         APP_GIT_URL = "https://github.com/demolinsoft/demo-pipeline"
