@@ -86,7 +86,17 @@ pipeline {
         }
 
         stage('Wait for deployment in DEV env') {
-            //TODO: Watch deployment until pod is in 'Running' state
+          steps {
+            script {
+                openshift.withCluster() {
+                  openshift.withProject( "${DEV_PROJECT}" ) {
+                    openshift.selector("dc", "${APP_NAME}").related('pods').untilEach(1) {
+                      return (it.object().status.phase == "Running")
+                    }
+                  }
+                }
+              }
+            }
         }
 
         stage('Promote to Staging Env') {
@@ -96,7 +106,7 @@ pipeline {
                 }
                 script {
                     openshift.withCluster() {
-                    // TODO: Tag the ${APP_NAME}:latest image stream in the dev env as ${APP_NAME}:stage in staging
+                        openshift.tag("${DEV_PROJECT}/${APP_NAME}:latest", "${STAGE_PROJECT}/${APP_NAME}:stage")
                     }
                 }
             }
@@ -112,7 +122,9 @@ pipeline {
                    '''
 
                 echo '### Creating a new app in Staging ###'
-                // TODO: Create a new app in staging and expose the service
+                oc project ${STAGE_PROJECT}
+                oc new-app --as-deployment-config --name ${APP_NAME} -i ${APP_NAME}:stage
+                oc expose svc/${APP_NAME}
             }
         }
 
