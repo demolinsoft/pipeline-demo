@@ -15,7 +15,7 @@ pipeline {
         APP_GIT_URL = "https://github.com/demolinsoft/demo-pipeline"
         NEXUS_SERVER = "http://nexus-common.apps.eu45.prod.nextcle.com/repository/java"
 
-        // DO NOT CHANGE THE GLOBAL VARS BELOW THIS LINE
+
         APP_NAME = "movies"
     }
 
